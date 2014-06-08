@@ -18,17 +18,18 @@ public class SimpleSemaphore {
      * Define a ReentrantLock to protect the critical section.
      */
     // TODO - you fill in here
-
+    private final ReentrantLock mLock = new ReentrantLock();
     /**
      * Define a Condition that waits while the number of permits is 0.
      */
     // TODO - you fill in here
-
+    private final Condition mCondition = null;
     /**
      * Define a count of the number of available permits.
      */
     // TODO - you fill in here.  Make sure that this data member will
     // ensure its values aren't cached by multiple Threads..
+    private int mPermits = 0;
 
     public SimpleSemaphore(int permits, boolean fair) {
         // TODO - you fill in here to initialize the SimpleSemaphore,
