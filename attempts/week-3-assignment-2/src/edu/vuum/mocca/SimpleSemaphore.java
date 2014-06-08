@@ -1,5 +1,7 @@
 package edu.vuum.mocca;
 
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.Condition;
@@ -18,12 +20,12 @@ public class SimpleSemaphore {
      * Define a ReentrantLock to protect the critical section.
      */
     // TODO - you fill in here
-    private final ReentrantLock mLock = new ReentrantLock();
+    private ReentrantLock mLock = null;
     /**
      * Define a Condition that waits while the number of permits is 0.
      */
     // TODO - you fill in here
-    private final Condition mCondition = null;
+    private Condition mCondition = null;
     /**
      * Define a count of the number of available permits.
      */
@@ -35,6 +37,9 @@ public class SimpleSemaphore {
         // TODO - you fill in here to initialize the SimpleSemaphore,
         // making sure to allow both fair and non-fair Semaphore
         // semantics.
+        this.mLock = new ReentrantLock(fair);
+        this.mPermits = permits;
+        this.mCondition = this.mLock.newCondition();
     }
 
     /**
@@ -43,6 +48,15 @@ public class SimpleSemaphore {
      */
     public void acquire() throws InterruptedException {
         // TODO - you fill in here.
+        mLock.lockInterruptibly();
+        try {
+            while (mPermits == 0) {
+                mCondition.await();
+            }
+            mPermits -= 1;
+        } finally {
+            mLock.unlock();
+        }
     }
 
     /**
@@ -51,6 +65,15 @@ public class SimpleSemaphore {
      */
     public void acquireUninterruptibly() {
         // TODO - you fill in here.
+        mLock.lock();
+        try {
+            while (mPermits == 0) {
+                mCondition.awaitUninterruptibly();
+            }
+            mPermits -= 1;
+        } finally {
+            mLock.unlock();
+        }
     }
 
     /**
@@ -58,6 +81,13 @@ public class SimpleSemaphore {
      */
     void release() {
         // TODO - you fill in here.
+        try{
+            mLock.lock();
+            mPermits += 1;
+            mCondition.signal();
+        } finally {
+            mLock.unlock();
+        }
     }
 
     /**
@@ -66,6 +96,6 @@ public class SimpleSemaphore {
     public int availablePermits() {
         // TODO - you fill in here by changing null to the appropriate
         // return value.
-        return null;
+        return mPermits;
     }
 }
