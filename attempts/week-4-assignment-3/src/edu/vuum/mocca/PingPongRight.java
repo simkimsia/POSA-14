@@ -50,6 +50,7 @@ public class PingPongRight {
          * iteration.
          */
         // TODO - You fill in here.
+        private String mMessage = null;
 
         /**
          * Two SimpleSemaphores use to alternate pings and pongs.  You
@@ -57,6 +58,7 @@ public class PingPongRight {
          * two data members.
          */
         // TODO - You fill in here.
+        private SimpleSemaphore[] mSimpleSemaphores = new SimpleSemaphore[2];
 
         /**
          * Constructor initializes the data member(s).
@@ -66,6 +68,11 @@ public class PingPongRight {
                                   SimpleSemaphore semaphoreTwo,
                                   int maxIterations) {
             // TODO - You fill in here.
+            mMessage = stringToPrint;
+            mSimpleSemaphores.add(semaphoreOne);
+            mSimpleSemaphores.add(semaphoreTwo);
+            mMaxLoopIterations = maxIterations;
+            mLatch = new CountDownLatch(2);
         }
 
         /**
@@ -80,6 +87,7 @@ public class PingPongRight {
              */
 
             // TODO - You fill in here.
+
         }
 
         /**
