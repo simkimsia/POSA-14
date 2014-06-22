@@ -79,4 +79,6 @@ proguard/
 
 # Temp files for KDE and other Editor's 
 *~
-
+*.iml
+*._*
+*.DS_Store
